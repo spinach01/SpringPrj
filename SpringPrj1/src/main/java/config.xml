@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:p="http://www.springframework.org/schema/p"
+    xmlns:lang="http://www.springframework.org/schema/lang"
+    xsi:schemaLocation="
+        http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+        http://www.springframework.org/schema/lang http://www.springframework.org/schema/lang/spring-lang.xsd">
+  <bean id="cal" class="aop.NewlecCalculator"></bean>
+  <bean id="logPrintAroundAdvice" class="aop.LogPrintAroundAdvice"></bean>
+  <bean id="logPrintBeforeAdvice" class="aop.LogPrintBeforeAdvice"></bean>
+  <bean id="logPrintAfterReturnningAdvice" class="aop.LogPrintAfterReturnningAdvice"></bean>
+  <bean id="logPrintAfterThrowingAdvice" class="aop.LogPrintAfterThrowingAdvice"></bean>
+  
+  <!-- <bean id="namePointcut" class="org.springframework.aop.support.NameMatchMethodPointcut">
+    <property name="mappedNames">
+      <list>
+        <value>add</value>
+        <value>sub</value>
+      </list>
+    </property>
+  </bean> -->
+  
+  <bean id="nameAdvisor" class="org.springframework.aop.support.RegexpMethodPointcutAdvisor">
+    <property name="patterns">
+      <list>
+        <value>a.*</value>
+        <value>.*b</value>
+      </list>
+    </property>
+    <property name="advice" ref="logPrintAroundAdvice"></property>
+  </bean>
+  
+  <bean id="proxy" class="org.springframework.aop.framework.ProxyFactoryBean">
+    <property name="target" ref="cal"></property>
+    <property name="interceptorNames">
+      <list>
+        <value>nameAdvisor</value>
+        <!-- <value>logPrintAroundAdvice</value>
+        <value>logPrintBeforeAdvice</value>
+        <value>logPrintAfterReturnningAdvice</value>
+        <value>logPrintAfterThrowingAdvice</value> -->
+      </list>
+    </property>
+  </bean>
+</beans>
